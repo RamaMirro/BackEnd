@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- SECCIÓN: Metadatos Básicos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Productos</title>
+    
+    <!-- SECCIÓN: Hojas de Estilos -->
+    <link href="/VistaPedidos/libreria/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/VistaPedidos/estilos/Style.css">
+</head>
+<body class="bg-light">
+
+    <!-- SECCIÓN: Barra de Navegación Global -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Sistema Pedidos</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="categorias.html">Categorías</a>
+                <a class="nav-link active" href="productos.html">Productos</a>
+                <a class="nav-link" href="pedidos.html">Nuevo Pedido</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SECCIÓN: Contenedor de Grilla Adaptable -->
+    <!-- Utiliza px-4 para dar un margen extendido en pantallas grandes de inventario -->
+    <div class="container-fluid px-4">
+        <div class="row">
+            
+            <!-- SUBSECCIÓN: Formulario de Alta de Producto (Panel Izquierdo) -->
+            <!-- Agrupa todos los campos de texto, números y selección para armar la entidad Producto -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Nuevo Producto</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label for="nombreProducto" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreProducto">
+                        </div>
+                        <div class="mb-2">
+                            <label for="stockProducto" class="form-label">Stock Inicial</label>
+                            <input type="number" class="form-control" id="stockProducto" min="0" value="0">
+                        </div>
+                        <div class="mb-2">
+                            <label for="precioCostoProducto" class="form-label">Precio Costo</label>
+                            <input type="number" class="form-control" id="precioCostoProducto" step="0.01" min="0" value="0.00">
+                        </div>
+                        <div class="mb-2">
+                            <label for="precioVentaProducto" class="form-label">Precio Venta</label>
+                            <input type="number" class="form-control" id="precioVentaProducto" step="0.01" min="0" value="0.00">
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Categoría</label>
+                            <!-- El script de JS inyectará las <option> mapeando el ID y Nombre de las categorías -->
+                            <select class="form-select" id="categoria">
+                                <!-- Datos cargados asíncronamente -->
+                            </select>
+                        </div>
+                        <button onclick="AgregarProducto()" class="btn btn-success w-100">Guardar Producto</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBSECCIÓN: Visualizador de Inventario (Panel Derecho) -->
+            <!-- Tabla detallada equipada para exponer todos los campos personalizados que devuelve el DTO 'VistaProducto' -->
+            <div class="col-lg-9 col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0">Inventario de Productos</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Stock</th>
+                                        <th>P. Costo</th>
+                                        <th>P. Venta</th>
+                                        <th>Categoría</th>
+                                        <th style="width: 80px;">Editar</th>
+                                        <th style="width: 80px;">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <!-- Id esencial utilizado en Productos.js para pintar las celdas de mercadería -->
+                                <tbody id="tablaProductos">
+                                    <!-- Filas dinámicas desde JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SECCIÓN: Ventana Modal para Edición Completa de Producto -->
+    <!-- Contiene réplicas exactas de los inputs del formulario de alta con IDs dedicados a la modificación masiva -->
+    <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">Modificar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Clave primaria oculta requerida por el método PUT -->
+                    <input type="hidden" id="idEditar" value="0">
+                    <div class="mb-2">
+                        <label for="nombreEditar" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreEditar">
+                    </div>
+                    <div class="mb-2">
+                        <label for="stockEditar" class="form-label">Stock</label>
+                        <input type="number" class="form-control" id="stockEditar">
+                    </div>
+                    <div class="mb-2">
+                        <label for="precioCostoEditar" class="form-label">Precio Costo</label>
+                        <input type="number" class="form-control" id="precioCostoEditar" step="0.01">
+                    </div>
+                    <div class="mb-2">
+                        <label for="precioVentaEditar" class="form-label">Precio Venta</label>
+                        <input type="number" class="form-control" id="precioVentaEditar" step="0.01">
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoriaIdEditar" class="form-label">Categoría</label>
+                        <!-- Menú desplegable gemelo para redefinir el rubro o categoría en la edición -->
+                        <select class="form-select" id="categoriaIdEditar">
+                            <!-- Opciones dinámicas de categorías -->
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="EditarProducto()" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN: Dependencias de Scripts -->
+    <script src="/VistaPedidos/libreria/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/VistaPedidos/js/Producto.js"></script>
+</body>
+</html>

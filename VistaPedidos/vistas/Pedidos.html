@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- SECCIÓN: Configuraciones de Encabezado -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Nuevo Pedido</title>
+    
+    <!-- SECCIÓN: Estilos Visuales -->
+    <link href="/VistaPedidos/libreria/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/VistaPedidos/estilos/Style.css">
+</head>
+<body class="bg-light">
+
+    <!-- SECCIÓN: Barra de Navegación Global -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Sistema Pedidos</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="categorias.html">Categorías</a>
+                <a class="nav-link" href="productos.html">Productos</a>
+                <a class="nav-link active" href="pedidos.html">Nuevo Pedido</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- SECCIÓN: Datos de Encabezado de la Venta (Cliente y Fecha) -->
+        <!-- Información global correspondiente a la entidad Pedido principal en C# -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="card-title mb-0">Información del Pedido</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nombreCliente" class="form-label">Nombre del Cliente</label>
+                        <input type="text" class="form-control" id="nombreCliente" placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="fechaPedido" class="form-label">Fecha de Emisión</label>
+                        <input type="date" class="form-control" id="fechaPedido">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <!-- SECCIÓN: Selector Interactivo de Productos (Panel Izquierdo) -->
+            <!-- Mecanismo dinámico que autocompleta el precio de venta unitario usando atributos data- al cambiar de opción -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Agregar Ítem</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label for="producto" class="form-label">Seleccionar Producto</label>
+                            <!-- Llama a cargarPrecio() en JS ante cada cambio de opción (onchange) -->
+                            <select class="form-select" id="producto" onchange="cargarPrecio()">
+                                <!-- Elementos inyectados automáticamente -->
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="precioUnitario" class="form-label">Precio Unitario ($)</label>
+                            <!-- Atributo readonly para que el operador no pueda adulterar el precio de venta oficial -->
+                            <input type="number" class="form-control" id="precioUnitario" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" min="1" value="1">
+                        </div>
+                        <!-- Introduce la línea de artículo en el arreglo global y actualiza la grilla de compras -->
+                        <button onclick="AgregarDetalle()" class="btn btn-success w-100">Añadir al Listado</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: Visualizador de Renglones del Carrito (Panel Derecho) -->
+            <!-- Expone de forma clara la sumatoria temporal de productos con opción de borrado antes del impacto final -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="card-title mb-0">Líneas del Pedido</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th style="width: 100px;">Cantidad</th>
+                                    <th style="width: 120px;">Precio Unit.</th>
+                                    <th style="width: 120px;">Subtotal</th>
+                                    <th style="width: 100px;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <!-- Id analizado por PedidosDetalle.js para vaciar y pintar el desglose de productos -->
+                            <tbody id="detallePedido">
+                                <!-- Líneas de compras inyectadas de manera asíncrona -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer bg-light text-end py-3">
+                        <!-- Botón maestro preparado para empaquetar y despachar todo el JSON compuesto hacia el backend -->
+                        <button class="btn btn-primary px-5">Confirmar y Registrar Pedido</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SECCIÓN: Inyección de Lógica y Utilitarios Finales -->
+    <script src="/VistaPedidos/libreria/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/VistaPedidos/js/Pedido.js"></script>
+    <script>
+        // SCRIPT COMPLEMENTARIO: Fija de forma automática la fecha real del día de hoy en el calendario
+        document.getElementById('fechaPedido').valueAsDate = new Date();
+    </script>
+</body>
+</html>

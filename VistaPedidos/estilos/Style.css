@@ -1,0 +1,71 @@
+/* SECCIÓN: Ajustes Tipográficos y de Cuerpo General */
+/* Establece una tipografía moderna y limpia para todo el entorno del sistema web */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* SECCIÓN: Estilización Avanzada de Tablas Administrativas */
+/* Modifica los encabezados de las tablas dándoles un aspecto corporativo y legible */
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+/* Regula el tamaño de las tipografías del contenido interno de las filas */
+.table td {
+    font-size: 0.95rem;
+}
+
+/* SECCIÓN: Normalización de Botones de Tabla */
+/* Aplica paddings reducidos y bordes suaves a los botones de acción directa en celdas */
+td button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out; /* Animación fluida de color al pasar el cursor */
+}
+
+/* SECCIÓN: Reglas de Respaldo (Fallback) para Botones Nativos */
+/* Si un botón dentro de una tabla no cuenta con clases explícitas de Bootstrap, aplica estilo peligro/rojo por defecto */
+td button:not([class]) {
+    background-color: #dc3545;
+    color: white;
+}
+
+td button:not([class]):hover {
+    background-color: #bd2130; /* Oscurece el botón al pasar el mouse por encima */
+}
+
+/* SECCIÓN: Suavizado Estético de Tarjetas Contenedoras */
+/* Elimina bordes toscos de las tarjetas de Bootstrap e impone esquinas redondeadas modernas con sombras suaves */
+.card {
+    border: none;
+    border-radius: 8px;
+}
+
+/* Fuerza el redondeado simétrico en la cabecera superior de los paneles contenedores */
+.card-header {
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+/* ==========================================================================
+   SECCIÓN: Corrección de Interferencia de Estilos en Selectores de Formulario
+   Fuerza el comportamiento visual nativo de Bootstrap y elimina sombras negras
+   ========================================================================== */
+select.form-select {
+    border: 1px solid #ced4da !important; /* Restablece el borde gris suave de Bootstrap */
+    box-shadow: none !important;          /* Elimina sombras oscuras pesadas */
+    background-position: right 0.75rem center !important; /* Mantiene la flechita en su lugar */
+    height: auto !important;              /* Evita que se altere la altura del combo */
+    position: static !important;          /* Asegura que no se mueva de su lugar físico */
+}
+
+/* Restablece el comportamiento visual cuando el selector está enfocado o clickeado */
+select.form-select:focus {
+    border-color: #86b7fe !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
